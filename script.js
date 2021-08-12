@@ -1,8 +1,8 @@
 panchangam = document.getElementById("panchangam")
 
 window.addEventListener("load", function(){
-    if (this.navigator.geolocation) {
-        this.navigator.geolocation.getCurrentPosition(show, exception);
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(show, exception);
     }
     else {
         window.alert("Geolocation is not supported by this browser.");
