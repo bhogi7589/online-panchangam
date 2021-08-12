@@ -1,33 +1,31 @@
-$(document).ready(function(){
-  $('[data-toggle="tooltip"]').tooltip();
+panchangam = document.getElementById("panchangam")
+
+window.addEventListener("load", function(){
+    if (this.navigator.geolocation) {
+        this.navigator.geolocation.getCurrentPosition(show, exception);
+    }
+    else {
+        window.alert("Geolocation is not supported by this browser.");
+    }
 });
 
-function initMap() {
-    const map = new google.maps.Map(document.getElementById("map"), {
-        zoom: 8,
-        center: {
-            lat: -34.397,
-            lng: 150.644
-        }
-    });
-    const geocoder = new google.maps.Geocoder();
-    document.getElementById("submit-btn").addEventListener("click", () => {
-        geocodeAddress(geocoder, map);
-    });
+function show(position){
+    panchangam.innerHTML = "Latitude: " + position.coords.latitude + "<br>Longitude: " + position.coords.longitude;
 }
 
-function geocodeAddress(geocoder, resultsMap) {
-    const address = document.getElementById("address").value;
-    geocoder.geocode({ address: address }, (results, status) => {
-        if (status === "OK") {
-            console.log(results);
-            resultsMap.setCenter(results[0].geometry.location);
-            new google.maps.Marker({
-                map: resultsMap,
-                position: results[0].geometry.location,
-            });
-        } else {
-            alert("Geocode error: " + status);
-        }
-    });
+function exception(error){
+    switch(error.code) {
+        case error.PERMISSION_DENIED:
+            window.alert("Request for geolocation was denied, please allow and refresh the page.");
+            break;
+        case error.POSITION_UNAVAILABLE:
+            window.alert("Location information is unavailable. Please try again.");
+            break;
+        case error.TIMEOUT:
+            window.alert("The request to get user location timed out. Please try again.");
+            break;
+        case error.UNKNOWN_ERROR:
+            window.alert("An unknown error occurred. Please try again.");
+            break;
+    }    
 }
